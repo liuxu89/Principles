@@ -8,6 +8,10 @@
 #let is-pdf-target = is-pdf-target()
 #let is-web-target = is-web-target()
 
+// first line indent
+#let empty-par = par[#box()]
+#let fake-par = context empty-par + v(-measure(empty-par + empty-par).height)
+
 // Theme (Colors)
 #let (
   style: theme-style,
@@ -38,7 +42,8 @@
 } else {
   10.5pt
 }
-#let heading-sizes = (26pt, 22pt, 14pt, 12pt, main-size)
+// #let heading-sizes = (26pt, 22pt, 14pt, 12pt, main-size)
+#let heading-sizes = (30pt, 26pt, 18pt, 16pt, main-size)
 #let list-indent = 0.5em
 
 /// The project function defines how your document looks.
@@ -92,8 +97,8 @@
     indent: list-indent * 0.618,
     body-indent: list-indent,
   )
-  set par(leading: 0.7em)
-  set block(spacing: 0.7em * 1.5)
+  set par(leading: 1em, first-line-indent: 2em)
+  set block(spacing: 1.3em)
 
   // Set text, spacing for headings
   // Render a dash to hint headings instead of bolding it as well if it's for web.
@@ -108,10 +113,11 @@
     }
 
     block(
-      spacing: 0.7em * 1.5 * 1.2,
-      below: 0.7em * 1.2,
+      spacing: 1.45em,
+      below: 1.45em,
       it,
     )
+    fake-par
   }
 
   // link setting

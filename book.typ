@@ -8,7 +8,10 @@
   summary: [
     // #prefix-chapter("sample-page.typ")[Hello, typst]
     = The Principles of Quantum Mechanics
-    - #chapter("src/chap1.typ")[The Principle of Superposition]
+    // = 1. The Principle of Superposition
+    - #chapter(none)[The Principle of Superposition]
+      - #chapter("src/chap-1/sec-1.typ")[The need for a quantum theory]
+      - #chapter("src/chap-1/sec-2.typ")[ The Polarization of photons]
   ]
 )
 
