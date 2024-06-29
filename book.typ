@@ -6,7 +6,9 @@
 #book-meta(
   title: "The Principles of Quantum Mechanics",
   summary: [
-    #prefix-chapter("sample-page.typ")[Hello, typst]
+    // #prefix-chapter("sample-page.typ")[Hello, typst]
+    = The Principles of Quantum Mechanics
+    - #chapter("src/chap1.typ")[The Principle of Superposition]
   ]
 )
 
