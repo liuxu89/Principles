@@ -1,0 +1,44 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # To push a branch 
+      pages: write  # To push to a GitHub Pages site
+      id-token: write # To update the deployment status
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install latest shiroa
+        run: |
+          # tag=$(curl 'https://api.github.com/repos/Myriad-Dreamin/shiroa/releases/latest' | jq -r '.tag_name')
+          tag=$(curl 'https://api.github.com/repos/Myriad-Dreamin/shiroa/releases' | jq -r '.[0].tag_name')
+          url="https://github.com/Myriad-Dreamin/shiroa/releases/download/${tag}/shiroa-x86_64-unknown-linux-gnu.tar.gz"
+          mkdir shiroa
+          curl -sSL $url | tar -xz --directory=./shiroa
+          echo `pwd`/shiroa/shiroa-x86_64-unknown-linux-gnu/bin >> $GITHUB_PATH
+      - name: font
+        run: |
+          mkdir -p assets/fonts/
+          curl -L https://github.com/Myriad-Dreamin/shiroa/releases/download/${tag}/font-assets.tar.gz | tar -xvz -C assets/fonts
+      - name: Build Book
+        run: |
+          # This assumes your book is in the root of your repository.
+          # Just add a `cd` here if you need to change to another directory.
+          shiroa build --font-path ./assets/fonts/ --path-to-root /Principles/
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: 'dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
